@@ -1,15 +1,8 @@
-import {
-  ForbiddenException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import {
-  emailTemplate,
-  TSendOtpRequest,
-  TSendOtpResponse,
   TSigninRequest,
   TSigninResponse,
   TSignupRequest,
@@ -20,18 +13,16 @@ import {
   TVerifyOtpResponse,
 } from 'src/libs/entities';
 import { expiredAt, generateOTP } from 'src/libs/utils';
-import { MailerService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
-    private readonly mailer: MailerService,
   ) {}
   async signup(payload: TSignupRequest): Promise<TSignupResponse> {
     try {
-      const { fullname, email, username, password } = payload;
+      const { name, email, password } = payload;
       const hashedPass = await argon.hash(password);
 
       const isEmailExist = await this.prisma.user.findFirst({
@@ -46,9 +37,8 @@ export class AuthService {
 
       const user = await this.prisma.user.create({
         data: {
-          fullname: fullname,
-          email: email,
-          username: username,
+          name,
+          email,
           password: hashedPass,
         },
       });
@@ -56,9 +46,8 @@ export class AuthService {
       return {
         message: 'Success',
         id: user.id,
-        fullname: user.fullname,
+        name: user.name,
         email: user.email,
-        username: user.username,
       };
     } catch (error) {
       return {
@@ -118,105 +107,6 @@ export class AuthService {
     }
   }
 
-  async resendOtp(payload: TSendOtpRequest): Promise<TSendOtpResponse> {
-    try {
-      const { email } = payload;
-
-      const user = await this.prisma.user.findFirst({
-        where: {
-          email,
-        },
-        include: {
-          otp: true,
-        },
-      });
-
-      if (!user) {
-        throw new ForbiddenException('Credentials incorrect');
-      }
-
-      const data = await this.prisma.otp.upsert({
-        where: {
-          user_id: user.id,
-        },
-        update: {
-          otp: generateOTP(),
-          expiredAt: expiredAt(),
-        },
-        create: {
-          user_id: user.id,
-          otp: generateOTP(),
-          expiredAt: expiredAt(),
-        },
-      });
-
-      const html = emailTemplate(
-        user.fullname,
-        data.otp,
-        'verifikasi akun anda',
-      );
-
-      const send = await this.mailer.sendMail({
-        email,
-        subject: 'Reset Password',
-        html,
-      });
-
-      if (!send) {
-        throw new InternalServerErrorException('Failed to send email', send);
-      }
-
-      return {
-        message: 'Success',
-      };
-    } catch (error) {
-      return {
-        message: 'Something went wrong',
-        error: error.message,
-      };
-    }
-  }
-
-  async verifyOtp(payload: TVerifyOtpRequest): Promise<TVerifyOtpResponse> {
-    try {
-      const { email, otp } = payload;
-
-      const user = await this.prisma.user.findFirst({
-        where: {
-          email,
-        },
-      });
-
-      if (!user) {
-        throw new ForbiddenException('Credentials incorrect');
-      }
-
-      const otpRecord = await this.prisma.otp.findFirst({
-        where: {
-          user_id: user.id,
-          otp: otp,
-        },
-      });
-
-      if (!otpRecord) {
-        throw new ForbiddenException('OTP Inccorect');
-      }
-      const now = expiredAt();
-      if (otpRecord.expiredAt > now) {
-        throw new ForbiddenException('OTP Expired');
-      }
-
-      return {
-        message: 'Success',
-      };
-    } catch (error) {
-      return {
-        message: 'Something went wrong',
-        error: error.message,
-      };
-    }
-  }
-
   async updatePassword(
     payload: TUpdatePasswordRequest,
   ): Promise<TUpdatePasswordResponse> {
@@ -226,7 +116,7 @@ export class AuthService {
 
       await this.prisma.user.update({
         where: {
-          email: email,
+          email,
         },
         data: {
           password: hashedPass,

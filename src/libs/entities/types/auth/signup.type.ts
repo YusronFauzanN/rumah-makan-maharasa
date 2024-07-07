@@ -1,15 +1,13 @@
 export type TSignupRequest = {
-  fullname: string;
+  name: string;
   email: string;
-  username: string;
   password: string;
 };
 
 export type TSignupResponse = {
   message?: string;
   id?: number;
-  fullname?: string;
+  name?: string;
   email?: string;
-  username?: string;
   error?: string;
 };

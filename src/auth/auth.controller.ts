@@ -32,20 +32,6 @@ export class AuthController {
     return this.authService.signin(payload);
   }
 
-  @Post('resend-otp')
-  @HttpCode(200)
-  @ApiBody({ type: ResendOtpDto })
-  resendOtp(@Body() payload: ResendOtpDto) {
-    return this.authService.resendOtp(payload);
-  }
-
-  @Post('verify-otp')
-  @HttpCode(200)
-  @ApiBody({ type: VerifyOtp })
-  verifyOtp(@Body() payload: VerifyOtp) {
-    return this.authService.verifyOtp(payload);
-  }
-
   @Post('update-password')
   @ApiBody({ type: UpdatePasswordDto })
   updatePassword(@Body() payload: TUpdatePasswordRequest) {

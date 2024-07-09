@@ -4,15 +4,16 @@ import { IsEmail, IsString } from 'class-validator';
 export class SignupDto {
   @ApiProperty({ example: 'John Doe' })
   @IsString()
-  fullname: string;
+  name: string;
 
-  @ApiProperty({ example: 'john@example.com' })
+  @ApiProperty({ example: 'John@example.com' })
+  @IsString()
   @IsEmail()
   email: string;
 
-  @ApiProperty({ example: 'john.doe' })
+  @ApiProperty({ example: 'John Doe' })
   @IsString()
-  username: string;
+  phone_number: string;
 
   @ApiProperty({ example: 'Password' })
   @IsString()

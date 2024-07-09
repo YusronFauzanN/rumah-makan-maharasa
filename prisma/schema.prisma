@@ -31,14 +31,19 @@ model Customer {
 }
 
 model Reservation {
-  id               Int      @id @default(autoincrement())
-  date             DateTime
+  id               Int     @id @default(autoincrement())
+  name             String
+  email            String
+  phone_number     String
+  reservation_date String
+  reservation_time String
   number_of_people Int
-  table_id         Int      @unique
-  table            Table    @relation(fields: [table_id], references: [id])
+  desc             String?
+  desk_id          Int     @unique
+  desk             Desk    @relation(fields: [desk_id], references: [id])
 }
 
-model Table {
+model Desk {
   id          Int          @id @default(autoincrement())
   name        String
   desc        String

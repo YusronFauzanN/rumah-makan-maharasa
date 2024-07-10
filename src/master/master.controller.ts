@@ -34,13 +34,38 @@ export class MasterController {
     return this.masterService.getTable(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() payload: TCreateDeskRequest) {
+  @Patch('table/:id')
+  updateTable(@Param('id') id: string, @Body() payload: TCreateDeskRequest) {
     return this.masterService.updateTable(+id, payload);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('table/:id')
+  removeTable(@Param('id') id: string) {
     return this.masterService.deleteTable(+id);
+  }
+
+  @Get('category')
+  getCategories() {
+    return this.masterService.getCategories();
+  }
+
+  @Get('category/:id')
+  getCategory(@Param() id: string) {
+    return this.masterService.getCategory(+id);
+  }
+
+  @Post('category')
+  createCategory(@Body() payload) {
+    return this.masterService.createCategory(payload);
+  }
+
+  @Patch('category/:id')
+  updateCategory(@Param() id: string, @Body() payload) {
+    return this.masterService.updateCategory(+id, payload);
+  }
+
+  @Delete('category')
+  deleteCategory(@Param() id: string) {
+    return this.masterService.deleteCategory(+id);
   }
 }

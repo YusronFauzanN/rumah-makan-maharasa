@@ -2,14 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ProductStatus } from 'src/libs/entities';
 
-export class CreateProductDto {
+export class UpdateProductDto {
   @ApiProperty({ example: 'Kangkung' })
   @IsString()
-  product_name: string;
+  @IsOptional()
+  product_name?: string;
 
   @ApiProperty({ example: 10000 })
   @IsNumber()
-  price: number;
+  @IsOptional()
+  price?: number;
 
   @ApiProperty({ example: 'Kangkung Pedas' })
   @IsString()
@@ -18,7 +20,8 @@ export class CreateProductDto {
 
   @ApiProperty({ example: 1 })
   @IsNumber()
-  category_id: number;
+  @IsOptional()
+  category_id?: number;
 
   @ApiProperty({ example: 'https://example.com/image.png' })
   @IsString()

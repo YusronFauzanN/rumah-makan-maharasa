@@ -52,7 +52,20 @@ model Desk {
 }
 
 model Category {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   category_name String
-  created_at    DateTime @default(now())
+  created_at    DateTime  @default(now())
+  Product       Product[]
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  product_name String
+  price        Int
+  desc         String?
+  total_sold   Int?
+  category_id  Int
+  image_url    String?
+  created_at   DateTime @default(now())
+  category     Category @relation(fields: [category_id], references: [id])
 }

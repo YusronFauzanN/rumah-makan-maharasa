@@ -11,6 +11,8 @@ import { MasterService } from './master.service';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { TCreateDeskRequest } from 'src/libs/entities';
 import { createTableDto } from 'src/libs/dto/master/create-table.dto';
+import { CreateCategoryDto } from 'src/libs/dto';
+import { TCreateCategoryRequest } from 'src/libs/entities/types/category';
 @ApiTags('Master')
 @Controller('master')
 export class MasterController {
@@ -55,7 +57,8 @@ export class MasterController {
   }
 
   @Post('category')
-  createCategory(@Body() payload) {
+  @ApiBody({ type: CreateCategoryDto })
+  createCategory(@Body() payload: TCreateCategoryRequest) {
     return this.masterService.createCategory(payload);
   }
 

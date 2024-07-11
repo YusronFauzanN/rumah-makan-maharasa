@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { FileModule } from './file/file.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { MasterModule } from './master/master.module';
+import { ProductModule } from './product/product.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -13,6 +14,7 @@ import { MasterModule } from './master/master.module';
     ReservationModule,
     MasterModule,
     FileModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],

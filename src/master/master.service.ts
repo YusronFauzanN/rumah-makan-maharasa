@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TCreateDeskRequest } from 'src/libs/entities';
+import { TCreateCategoryRequest } from 'src/libs/entities/types/category';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -104,7 +105,7 @@ export class MasterService {
     }
   }
 
-  async createCategory(payload) {
+  async createCategory(payload: TCreateCategoryRequest) {
     const { category_name } = payload;
     try {
       const category = await this.prisma.category.create({

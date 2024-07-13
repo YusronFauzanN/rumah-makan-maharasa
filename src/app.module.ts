@@ -6,6 +6,8 @@ import { FileModule } from './file/file.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { MasterModule } from './master/master.module';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -15,6 +17,8 @@ import { ProductModule } from './product/product.module';
     MasterModule,
     FileModule,
     ProductModule,
+    OrderModule,
+    DashboardModule,
   ],
   controllers: [],
   providers: [],

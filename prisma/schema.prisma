@@ -59,13 +59,32 @@ model Category {
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   product_name String
   price        Int
   desc         String?
   total_sold   Int?
   category_id  Int
   image_url    String?
-  created_at   DateTime @default(now())
-  category     Category @relation(fields: [category_id], references: [id])
+  created_at   DateTime      @default(now())
+  category     Category      @relation(fields: [category_id], references: [id])
+  OrderDetail  OrderDetail[]
+}
+
+model Order {
+  id           Int           @id @default(autoincrement())
+  order_number String
+  total_price  Int
+  order_detail OrderDetail[]
+  created_at   DateTime      @default(now())
+}
+
+model OrderDetail {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  order_id   Int
+  quantity   Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  order      Order    @relation(fields: [order_id], references: [id])
+  created_at DateTime @default(now())
 }

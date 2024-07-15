@@ -1,18 +1,12 @@
 import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-import {
-  ResendOtpDto,
-  SigninDto,
-  SignupDto,
-  UpdatePasswordDto,
-} from 'src/libs/dto';
+import { SigninDto, SignupDto, UpdatePasswordDto } from 'src/libs/dto';
 import {
   TSigninRequest,
   TSignupRequest,
   TUpdatePasswordRequest,
 } from 'src/libs/entities';
-import { VerifyOtp } from 'src/libs/dto/auth/verify-otp.dto';
 
 @ApiTags('Auth')
 @Controller('auth')

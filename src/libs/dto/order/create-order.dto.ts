@@ -13,17 +13,4 @@ export class CreateOrderDto {
     product_id: number;
     quantity: number;
   }>;
-
-  @ApiProperty({ example: 'John Doe' })
-  @IsString()
-  customer_name: string;
-
-  @ApiProperty({ example: '123 Main Street, Anytown USA' })
-  @IsString()
-  customer_address: string;
-
-  @ApiProperty({ example: 'Cash' })
-  @IsString()
-  @IsEnum(['Cash', 'Qris'])
-  payment_method: string;
 }

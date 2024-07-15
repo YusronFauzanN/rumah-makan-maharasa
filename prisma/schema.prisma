@@ -18,16 +18,17 @@ model User {
   name       String
   email      String    @unique
   password   String
-  created_at DateTime  @default(now())
+  created_at DateTime? @default(now())
   customer   Customer?
 }
 
 model Customer {
-  id       Int    @id @default(autoincrement())
-  fullname String
-  email    String
-  userId   Int    @unique
-  user     User   @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  fullname   String
+  email      String
+  created_at DateTime @default(now())
+  user_id    Int?     @unique
+  user       User?    @relation(fields: [user_id], references: [id])
 }
 
 model Reservation {
@@ -59,13 +60,32 @@ model Category {
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   product_name String
   price        Int
   desc         String?
   total_sold   Int?
   category_id  Int
   image_url    String?
-  created_at   DateTime @default(now())
-  category     Category @relation(fields: [category_id], references: [id])
+  created_at   DateTime      @default(now())
+  category     Category      @relation(fields: [category_id], references: [id])
+  OrderDetail  OrderDetail[]
+}
+
+model Order {
+  id           Int           @id @default(autoincrement())
+  order_number String
+  total_price  Int
+  order_detail OrderDetail[]
+  created_at   DateTime      @default(now())
+}
+
+model OrderDetail {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  order_id   Int
+  quantity   Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  order      Order    @relation(fields: [order_id], references: [id])
+  created_at DateTime @default(now())
 }

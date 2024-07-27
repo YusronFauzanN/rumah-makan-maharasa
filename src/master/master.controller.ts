@@ -24,13 +24,12 @@ export class MasterController {
     return this.masterService.createTable(payload);
   }
 
-  @Get('table')
-  @ApiBody({ type: createTableDto })
+  @Get('tables')
   getTables() {
     return this.masterService.getTables();
   }
 
-  @Get('table')
+  @Get('table/:id')
   @ApiBody({ type: createTableDto })
   findOneTable(@Param('id') id: string) {
     return this.masterService.getTable(+id);
